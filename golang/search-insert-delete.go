@@ -17,10 +17,9 @@ var searchers = 50
 var inserters = 20
 var deleters = 10
 
-func sleep() {
-	time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+func sleepThread(counter int) {
+	time.Sleep(time.Duration(rand.Intn(counter)) * time.Millisecond)
 }
-
 func main() {
 	fmt.Println("Starting inserters")
 	myList.PushBack(1)
@@ -30,7 +29,7 @@ func main() {
 	wg.Add(inserters)
 	go func() {
 		for i := 0; i < inserters; i++ {
-			time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+			sleepThread(250)
 			go insert()
 		}
 	}()
@@ -38,7 +37,7 @@ func main() {
 	wg.Add(searchers)
 	go func() {
 		for i := 0; i < searchers; i++ {
-			time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+			sleepThread(100)
 			go search()
 		}
 	}()
@@ -47,7 +46,7 @@ func main() {
 	wg.Add(deleters)
 	go func() {
 		for i := 0; i < searchers; i++ {
-			time.Sleep(time.Duration(rand.Intn(500)) * time.Millisecond)
+			sleepThread(500)
 			go delete()
 		}
 	}()
@@ -55,38 +54,38 @@ func main() {
 }
 
 func search() {
-	sleep()
+	sleepThread(250)
 	//search only needs to readlock the delete mutex
 	mutexDelete.RLock()
 	fmt.Println("Searched: ", myList.Front().Value)
-	sleep()
+	sleepThread(250)
 	mutexDelete.RUnlock()
 	wg.Done()
 }
 
 func insert() {
-	sleep()
+	sleepThread(250)
 	//Insert needs to lock the insert mutex to make sure no other inserts and also readlock the delete mutex
 	mutexInsert.Lock()
 	mutexDelete.RLock()
 	val := rand.Intn(100)
 	fmt.Printf("Inserting: %d\n", val)
 	myList.PushFront(val)
-	sleep()
+	sleepThread(250)
 	mutexInsert.Unlock()
 	mutexDelete.RUnlock()
 	wg.Done()
 }
 
 func delete() {
-	sleep()
+	sleepThread(250)
 	//Need to lock both the insert and delete mutex so no one else is doing anything
 	mutexInsert.Lock()
 	mutexDelete.Lock()
 	val := myList.Back()
 	fmt.Printf("Deleting: %d\n", val.Value)
 	myList.Remove(val)
-	sleep()
+	sleepThread(250)
 	mutexInsert.Unlock()
 	mutexDelete.Unlock()
 	wg.Done()
