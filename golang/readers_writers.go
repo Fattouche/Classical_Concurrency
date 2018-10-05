@@ -11,40 +11,40 @@ var myGlobal int
 var mutex sync.RWMutex
 var wg sync.WaitGroup
 
-func sleep() {
-	time.Sleep(time.Duration(rand.Intn(500)) * time.Millisecond)
+func sleepThread() {
+	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
 }
 
 func main() {
-	fmt.Println("Starting readers")
-	wg.Add(10)
-	for i := 0; i < 10; i++ {
+	totalReaders := 10
+	totalWriters := 5
+	wg.Add(totalReaders)
+	for i := 0; i < totalReaders; i++ {
 		go read()
 	}
-	fmt.Println("Start writers")
-	wg.Add(5)
-	for i := 0; i < 5; i++ {
+	wg.Add(totalWriters)
+	for i := 0; i < totalWriters; i++ {
 		go write()
 	}
 	wg.Wait()
 }
 
 func read() {
-	sleep()
+	sleepThread()
 	mutex.RLock()
 	fmt.Println("Read: ", myGlobal)
-	sleep()
+	sleepThread()
 	mutex.RUnlock()
 	wg.Done()
 }
 
 func write() {
-	sleep()
+	sleepThread()
 	mutex.Lock()
 	temp := myGlobal
 	myGlobal++
 	fmt.Printf("Write changed from %d to %d\n", temp, myGlobal)
-	sleep()
+	sleepThread()
 	mutex.Unlock()
 	wg.Done()
 }

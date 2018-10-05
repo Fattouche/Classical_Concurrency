@@ -5,13 +5,20 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/pkg/profile"
 )
 
 var chairs = 5
 var customers = 100
 var wg sync.WaitGroup
 
+func sleepThread() {
+	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+}
+
 func main() {
+	defer profile.Start().Stop()
 	//Buffered to number of chairs
 	chairs := make(chan int, chairs)
 	//Blocks on both ends untill barber and customer are both ready
@@ -22,7 +29,7 @@ func main() {
 	//Start the customers at random times
 	for i := 0; i < customers; i++ {
 		wg.Add(1)
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+		sleepThread()
 		go getHairCut(chairs, barberAvailable, i)
 	}
 	//Make sure we wait till all the customers have visited the shop
@@ -36,7 +43,7 @@ func cutHair(chairs, barberAvailable chan int) {
 		//Free up a chair
 		<-chairs
 		//cut hair
-		time.Sleep(time.Duration(rand.Intn(500)) * time.Millisecond)
+		sleepThread()
 	}
 }
 

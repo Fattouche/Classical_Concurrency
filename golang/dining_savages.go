@@ -22,6 +22,7 @@ func main() {
 		wg.Add(1)
 		go eat(potEmpty, pot, potFull)
 	}
+
 	//Start the cook
 	cook(potEmpty, pot, potFull)
 	//Make sure we wait for all savages to eat

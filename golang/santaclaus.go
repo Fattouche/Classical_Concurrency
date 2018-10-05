@@ -12,6 +12,10 @@ var reindeer = 9
 var elves = 100
 var wg sync.WaitGroup
 
+func sleepThread(counter int) {
+	time.Sleep(time.Duration(rand.Intn(counter)) * time.Millisecond)
+}
+
 func main() {
 	//Buffered to number of reindeers remaining
 	reindeersRemaining := make(chan int, reindeer)
@@ -29,19 +33,13 @@ func main() {
 
 	wg.Add(elves)
 	//Start the elves at random times
-	go func() {
-		for i := 0; i < elves; i++ {
-			time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
-			go getHelp(santaAvailable, elvesWaiting, threeElves, i)
-		}
-	}()
+	for i := 0; i < elves; i++ {
+		go getHelp(santaAvailable, elvesWaiting, threeElves, i)
+	}
 
-	go func() {
-		for i := 0; i < reindeer; i++ {
-			time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
-			go arriveReindeer(reindeersRemaining, reindeersFinished)
-		}
-	}()
+	for i := 0; i < reindeer; i++ {
+		go arriveReindeer(reindeersRemaining, reindeersFinished)
+	}
 	//Make sure we wait till all elves have finished or the last reindeer arrives
 	wg.Wait()
 }
@@ -54,6 +52,7 @@ func initReindeer(reindeersRemaining chan int) {
 }
 
 func arriveReindeer(reindeersRemaining, reindeersFinished chan int) {
+	sleepThread(2500)
 	<-reindeersRemaining
 	fmt.Println("New reindeer arrived")
 	if len(reindeersRemaining) == 0 {
@@ -74,15 +73,16 @@ func helpElves(santaAvailable, threeElves chan int) {
 		//Wait till three elves have arrived
 		<-threeElves
 		fmt.Println("Helping three elves")
+		//Helping
+		sleepThread(250)
 		//Signal you are available again
 		santaAvailable <- 1
-		//Helping
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+
 	}
 }
 
 func getHelp(santaAvailable, elvesWaiting, threeElves chan int, id int) {
-	fmt.Printf("elf: %d waiting for santas help\n", id)
+	sleepThread(250)
 	//Go into the queue of elves waiting
 	elvesWaiting <- 1
 	//If you are third elf, notify santa
@@ -95,7 +95,7 @@ func getHelp(santaAvailable, elvesWaiting, threeElves chan int, id int) {
 	}
 	<-santaAvailable
 	//Get santas help
-	time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+	sleepThread(250)
 	//No longer waiting
 	wg.Done()
 }

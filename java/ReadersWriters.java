@@ -9,56 +9,45 @@ public class ReadersWriters {
   static int numReaders;
   static int valueToRead;
 
+  static int myGlobal;
+
+  public static void sleepThread() {
+    try {
+      Thread.sleep((long) (Math.random() * 250));
+    } catch (InterruptedException e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
   public static void main(String args[]) {
-    valueToRead = 0;
+    int totalReaders = 10;
+    int totatlWriters = 5;
+
+    myGlobal = 0;
     numReaders = 0;
     Reader reader = new Reader();
     Writer writer = new Writer();
 
-    // init readers
-    Thread thread0 = new Thread(reader);
-    Thread thread1 = new Thread(reader);
-    Thread thread2 = new Thread(reader);
-    Thread thread3 = new Thread(reader);
-    Thread thread4 = new Thread(reader);
+    Thread[] readers = new Thread[totalReaders];
+    for (int i = 0; i < readers.length; i++) {
+      readers[i] = new Thread(reader);
+      readers[i].setName("Reader " + i);
+      readers[i].start();
+    }
 
-    thread0.setName("thread0");
-    thread1.setName("thread1");
-    thread2.setName("thread2");
-    thread3.setName("thread3");
-    thread4.setName("thread4");
-
-    // init writers
-    Thread thread5 = new Thread(writer);
-    Thread thread6 = new Thread(writer);
-    Thread thread7 = new Thread(writer);
-    Thread thread8 = new Thread(writer);
-    Thread thread9 = new Thread(writer);
-
-    thread5.setName("thread5");
-    thread6.setName("thread6");
-    thread7.setName("thread7");
-    thread8.setName("thread8");
-    thread9.setName("thread9");
-
-    thread0.start();
-    thread1.start();
-    thread2.start();
-    thread3.start();
-    thread4.start();
-    thread5.start();
-    thread6.start();
-    thread7.start();
-    thread8.start();
-    thread9.start();
+    Thread[] writers = new Thread[totatlWriters];
+    for (int i = 0; i < writers.length; i++) {
+      writers[i] = new Thread(writer);
+      writers[i].setName("Writer " + i);
+      writers[i].start();
+    }
   }
 
   static class Reader implements Runnable {
     @Override
     public void run() {
       try {
-        Random rand = new Random();
-        Thread.sleep(rand.nextInt(1000) + 250);
+        sleepThread();
         // Make sure no other reader is trying to add itself
         mutex.acquire();
         // Increment number of readers
@@ -69,8 +58,8 @@ public class ReadersWriters {
         }
         mutex.release();
         // Read value
-        System.out.println("Thread: " + Thread.currentThread().getName() + " Reading value " + valueToRead);
-        Thread.sleep(250);
+        System.out.println("Read: " + myGlobal);
+        sleepThread();
         mutex.acquire();
         // Decrement readers
         numReaders--;
@@ -90,15 +79,14 @@ public class ReadersWriters {
     @Override
     public void run() {
       try {
-        Random rand = new Random();
-        Thread.sleep(rand.nextInt(500) + 250);
+        sleepThread();
         // Make sure the room is empty
         roomEmpty.acquire();
-        int val = rand.nextInt(10) + 1;
+        int temp = myGlobal;
         // Write value
-        valueToRead = val;
-        Thread.sleep(500);
-        System.out.println("Thread: " + Thread.currentThread().getName() + " Writing value " + valueToRead);
+        myGlobal++;
+        System.out.println("Write changed from " + temp + " to " + myGlobal);
+        sleepThread();
         // Finish with the room
         roomEmpty.release();
       } catch (InterruptedException e) {
