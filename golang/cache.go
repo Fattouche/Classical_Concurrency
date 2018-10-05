@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+func sleepThread(counter int) {
+	time.Sleep(time.Duration(rand.Intn(counter)) * time.Millisecond)
+}
+
 type object struct {
 	expiration int64
 	value      interface{}
@@ -36,7 +40,7 @@ func main() {
 		wg.Done()
 	}()
 	go func() {
-		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		sleepThread(100)
 		fmt.Println("Searching 1")
 		ok := false
 		var temp interface{}
@@ -46,7 +50,7 @@ func main() {
 			fmt.Println("Found 1 with value ", temp.(object).value)
 		}
 
-		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		sleepThread(100)
 		fmt.Println("Searching 2")
 		if temp, ok = myCache.get("2"); !ok {
 			fmt.Println("Failed to find 2")
@@ -54,7 +58,7 @@ func main() {
 			fmt.Println("Found 2 with value ", temp.(object).value)
 		}
 
-		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		sleepThread(100)
 		fmt.Println("Searching 5")
 		if temp, ok = myCache.get("5"); !ok {
 			fmt.Println("Failed to find 5")
@@ -62,7 +66,7 @@ func main() {
 			fmt.Println("Found 5 with value ", temp.(object).value)
 		}
 
-		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		sleepThread(100)
 		fmt.Println("Searching 6")
 		if temp, ok = myCache.get("6"); !ok {
 			fmt.Println("Failed to find 6")
@@ -73,7 +77,7 @@ func main() {
 	}()
 
 	go func() {
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+		sleepThread(250)
 		fmt.Println("Deleting 1")
 		ok := false
 		if ok = myCache.remove("1"); !ok {
@@ -81,21 +85,21 @@ func main() {
 		}
 		fmt.Println("deleted 1 from cache")
 
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+		sleepThread(250)
 		fmt.Println("Deleting 2")
 		if ok = myCache.remove("2"); !ok {
 			fmt.Println("Failed to delete 2")
 		}
 		fmt.Println("deleted 2 from cache")
 
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+		sleepThread(250)
 		fmt.Println("Deleting 7")
 		if ok = myCache.remove("7"); !ok {
 			fmt.Println("Failed to delete 7")
 		}
 		fmt.Println("deleted 7 from cache")
 
-		time.Sleep(time.Duration(rand.Intn(250)) * time.Millisecond)
+		sleepThread(250)
 		fmt.Println("Deleting 9")
 		if ok = myCache.remove("9"); !ok {
 			fmt.Println("Failed to delete 9")
@@ -137,20 +141,24 @@ func (c *cache) insert(key string, val interface{}, duration time.Duration) bool
 func (c *cache) remove(key string) bool {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
-	if _, ok := c.objects[key]; !ok {
+	obj, ok := c.objects[key]
+	if isExpired(obj) {
+		delete(c.objects, key)
 		return false
 	}
 	delete(c.objects, key)
-	return true
+	return ok
 }
 
 func (c *cache) exists(key string) bool {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
-	if _, ok := c.objects[key]; ok {
-		return true
+	obj, ok := c.objects[key]
+	if isExpired(obj) {
+		delete(c.objects, key)
+		return false
 	}
-	return false
+	return ok
 }
 
 func (c *cache) get(key string) (interface{}, bool) {
