@@ -33,7 +33,7 @@ func main() {
 			go insert()
 		}
 	}()
-	fmt.Println("Start searchers")
+	fmt.Println("Starting searchers")
 	wg.Add(searchers)
 	go func() {
 		for i := 0; i < searchers; i++ {
