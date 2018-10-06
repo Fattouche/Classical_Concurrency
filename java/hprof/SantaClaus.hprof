@@ -1,0 +1,362 @@
+JAVA PROFILE 1.0.1, created Sat Oct 06 11:06:28 2018
+
+Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+  - Neither the name of Oracle nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=50000198, id = 200001, name="main", group="main")
+THREAD START (obj=500001d0, id = 200004, name="santa", group="main")
+THREAD START (obj=500001d3, id = 200005, name="reindeer 0", group="main")
+THREAD START (obj=500001d6, id = 200008, name="reindeer 3", group="main")
+THREAD START (obj=500001d5, id = 200007, name="reindeer 2", group="main")
+THREAD START (obj=500001d4, id = 200006, name="reindeer 1", group="main")
+THREAD START (obj=500001d7, id = 200009, name="reindeer 4", group="main")
+THREAD START (obj=500001d9, id = 200010, name="reindeer 5", group="main")
+THREAD START (obj=500001da, id = 200011, name="reindeer 6", group="main")
+THREAD START (obj=500001dc, id = 200012, name="reindeer 7", group="main")
+THREAD START (obj=500001dd, id = 200013, name="reindeer 8", group="main")
+THREAD START (obj=500001df, id = 200015, name="elf 1", group="main")
+THREAD START (obj=500001de, id = 200014, name="elf 0", group="main")
+THREAD START (obj=500001e0, id = 200016, name="elf 2", group="main")
+THREAD START (obj=500001e1, id = 200017, name="elf 3", group="main")
+THREAD START (obj=500001e4, id = 200020, name="elf 6", group="main")
+THREAD START (obj=500001e2, id = 200018, name="elf 4", group="main")
+THREAD START (obj=500001e3, id = 200019, name="elf 5", group="main")
+THREAD START (obj=500001e5, id = 200021, name="elf 7", group="main")
+THREAD START (obj=500001e6, id = 200022, name="elf 8", group="main")
+THREAD START (obj=500001e7, id = 200023, name="elf 9", group="main")
+THREAD START (obj=500001e8, id = 200024, name="elf 10", group="main")
+THREAD START (obj=500001e9, id = 200025, name="elf 11", group="main")
+THREAD START (obj=500001ea, id = 200026, name="elf 12", group="main")
+THREAD START (obj=500001ec, id = 200028, name="elf 14", group="main")
+THREAD START (obj=500001ed, id = 200029, name="elf 15", group="main")
+THREAD START (obj=500001eb, id = 200027, name="elf 13", group="main")
+THREAD START (obj=500001ee, id = 200030, name="elf 16", group="main")
+THREAD START (obj=500001ef, id = 200031, name="elf 17", group="main")
+THREAD START (obj=500001f0, id = 200032, name="elf 18", group="main")
+THREAD START (obj=500001f1, id = 200033, name="elf 19", group="main")
+THREAD START (obj=500001f2, id = 200034, name="elf 20", group="main")
+THREAD START (obj=500001f3, id = 200035, name="elf 21", group="main")
+THREAD START (obj=500001f4, id = 200036, name="elf 22", group="main")
+THREAD START (obj=500001f5, id = 200037, name="elf 23", group="main")
+THREAD START (obj=500001f7, id = 200039, name="elf 25", group="main")
+THREAD START (obj=500001f6, id = 200038, name="elf 24", group="main")
+THREAD START (obj=500001f8, id = 200040, name="elf 26", group="main")
+THREAD START (obj=500001f9, id = 200041, name="elf 27", group="main")
+THREAD START (obj=500001fa, id = 200042, name="elf 28", group="main")
+THREAD START (obj=500001fb, id = 200043, name="elf 29", group="main")
+THREAD START (obj=500001fc, id = 200044, name="elf 30", group="main")
+THREAD START (obj=500001fe, id = 200045, name="elf 31", group="main")
+THREAD START (obj=500001fd, id = 200046, name="elf 32", group="main")
+THREAD START (obj=500001ff, id = 200047, name="elf 33", group="main")
+THREAD START (obj=50000200, id = 200048, name="elf 34", group="main")
+THREAD START (obj=50000201, id = 200049, name="elf 35", group="main")
+THREAD START (obj=50000202, id = 200050, name="elf 36", group="main")
+THREAD START (obj=50000203, id = 200051, name="elf 37", group="main")
+THREAD START (obj=50000204, id = 200052, name="elf 38", group="main")
+THREAD START (obj=50000205, id = 200053, name="elf 39", group="main")
+THREAD START (obj=50000207, id = 200055, name="elf 41", group="main")
+THREAD START (obj=50000208, id = 200056, name="elf 42", group="main")
+THREAD START (obj=50000206, id = 200054, name="elf 40", group="main")
+THREAD START (obj=5000020a, id = 200058, name="elf 43", group="main")
+THREAD START (obj=50000209, id = 200057, name="elf 44", group="main")
+THREAD START (obj=5000020b, id = 200059, name="elf 45", group="main")
+THREAD START (obj=5000020c, id = 200060, name="elf 46", group="main")
+THREAD START (obj=5000020d, id = 200061, name="elf 47", group="main")
+THREAD START (obj=5000020f, id = 200063, name="elf 49", group="main")
+THREAD START (obj=50000210, id = 200064, name="elf 50", group="main")
+THREAD START (obj=5000020e, id = 200062, name="elf 48", group="main")
+THREAD START (obj=50000211, id = 200065, name="elf 51", group="main")
+THREAD START (obj=50000213, id = 200067, name="elf 54", group="main")
+THREAD START (obj=50000214, id = 200068, name="elf 53", group="main")
+THREAD START (obj=50000212, id = 200066, name="elf 52", group="main")
+THREAD START (obj=50000215, id = 200069, name="elf 55", group="main")
+THREAD START (obj=50000216, id = 200070, name="elf 56", group="main")
+THREAD START (obj=50000217, id = 200071, name="elf 57", group="main")
+THREAD START (obj=50000218, id = 200072, name="elf 58", group="main")
+THREAD START (obj=50000219, id = 200073, name="elf 59", group="main")
+THREAD START (obj=5000021a, id = 200074, name="elf 60", group="main")
+THREAD START (obj=5000021b, id = 200075, name="elf 61", group="main")
+THREAD START (obj=5000021d, id = 200076, name="elf 62", group="main")
+THREAD START (obj=5000021e, id = 200078, name="elf 64", group="main")
+THREAD START (obj=5000021c, id = 200077, name="elf 63", group="main")
+THREAD START (obj=5000021f, id = 200079, name="elf 65", group="main")
+THREAD START (obj=50000221, id = 200081, name="elf 67", group="main")
+THREAD START (obj=50000222, id = 200082, name="elf 68", group="main")
+THREAD START (obj=50000220, id = 200080, name="elf 66", group="main")
+THREAD START (obj=50000223, id = 200083, name="elf 69", group="main")
+THREAD START (obj=50000224, id = 200084, name="elf 70", group="main")
+THREAD START (obj=50000225, id = 200085, name="elf 71", group="main")
+THREAD START (obj=50000227, id = 200087, name="elf 73", group="main")
+THREAD START (obj=50000226, id = 200086, name="elf 72", group="main")
+THREAD START (obj=50000228, id = 200088, name="elf 75", group="main")
+THREAD START (obj=50000229, id = 200090, name="elf 76", group="main")
+THREAD START (obj=5000022a, id = 200089, name="elf 74", group="main")
+THREAD START (obj=5000022b, id = 200091, name="elf 77", group="main")
+THREAD START (obj=5000022c, id = 200092, name="elf 79", group="main")
+THREAD START (obj=5000022e, id = 200093, name="elf 80", group="main")
+THREAD START (obj=5000022d, id = 200094, name="elf 78", group="main")
+THREAD START (obj=5000022f, id = 200095, name="elf 81", group="main")
+THREAD START (obj=50000230, id = 200096, name="elf 82", group="main")
+THREAD START (obj=50000231, id = 200097, name="elf 83", group="main")
+THREAD START (obj=50000232, id = 200098, name="elf 85", group="main")
+THREAD START (obj=50000234, id = 200100, name="elf 86", group="main")
+THREAD START (obj=50000238, id = 200104, name="elf 90", group="main")
+THREAD START (obj=50000233, id = 200099, name="elf 84", group="main")
+THREAD START (obj=50000236, id = 200102, name="elf 88", group="main")
+THREAD START (obj=50000237, id = 200103, name="elf 89", group="main")
+THREAD START (obj=50000235, id = 200101, name="elf 87", group="main")
+THREAD START (obj=50000239, id = 200105, name="elf 91", group="main")
+THREAD START (obj=5000023a, id = 200106, name="elf 92", group="main")
+THREAD START (obj=5000023b, id = 200107, name="elf 93", group="main")
+THREAD START (obj=5000023c, id = 200108, name="elf 94", group="main")
+THREAD START (obj=5000023e, id = 200110, name="elf 96", group="main")
+THREAD START (obj=5000023f, id = 200111, name="elf 97", group="main")
+THREAD START (obj=5000023d, id = 200109, name="elf 95", group="main")
+THREAD END (id = 200001)
+THREAD START (obj=50000240, id = 200112, name="elf 98", group="main")
+THREAD START (obj=50000241, id = 200113, name="elf 99", group="main")
+THREAD START (obj=50000242, id = 200114, name="DestroyJavaVM", group="main")
+THREAD END (id = 200039)
+THREAD END (id = 200054)
+THREAD END (id = 200017)
+THREAD END (id = 200043)
+THREAD END (id = 200073)
+THREAD END (id = 200016)
+THREAD END (id = 200050)
+THREAD END (id = 200083)
+THREAD END (id = 200023)
+THREAD END (id = 200079)
+THREAD END (id = 200046)
+THREAD END (id = 200032)
+THREAD END (id = 200051)
+THREAD END (id = 200113)
+THREAD END (id = 200095)
+THREAD END (id = 200028)
+THREAD END (id = 200099)
+THREAD END (id = 200082)
+THREAD END (id = 200058)
+THREAD END (id = 200088)
+THREAD END (id = 200030)
+THREAD END (id = 200077)
+THREAD END (id = 200022)
+THREAD END (id = 200061)
+THREAD END (id = 200075)
+THREAD END (id = 200035)
+THREAD END (id = 200107)
+THREAD END (id = 200063)
+THREAD END (id = 200019)
+THREAD END (id = 200070)
+THREAD END (id = 200089)
+THREAD END (id = 200086)
+THREAD END (id = 200053)
+THREAD END (id = 200004)
+THREAD END (id = 200012)
+THREAD END (id = 200009)
+THREAD END (id = 200008)
+THREAD END (id = 200010)
+THREAD END (id = 200011)
+THREAD END (id = 200005)
+THREAD END (id = 200006)
+THREAD END (id = 200007)
+THREAD END (id = 200013)
+THREAD END (id = 200114)
+TRACE 300188: (thread=200075)
+	sun.misc.Unsafe.compareAndSwapInt(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.compareAndSetWaitStatus(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doReleaseShared(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.setHeadAndPropagate(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.acquire(<Unknown Source>:Unknown line)
+	SantaClaus$Elf.run(SantaClaus.java:59)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300186: (thread=200010)
+	java.nio.Buffer.position(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	java.io.PrintStream.print(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SantaClaus$Reindeer.run(SantaClaus.java:119)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300185: (thread=200004)
+	sun.misc.Unsafe.compareAndSwapInt(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.compareAndSetWaitStatus(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doReleaseShared(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.releaseShared(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.release(<Unknown Source>:Unknown line)
+	SantaClaus$Santa.run(SantaClaus.java:103)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300184: (thread=200004)
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.newLine(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SantaClaus$Santa.run(SantaClaus.java:100)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300183: (thread=200012)
+	sun.misc.Unsafe.putObject(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.LockSupport.setBlocker(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.LockSupport.park(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.parkAndCheckInterrupt(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.acquire(<Unknown Source>:Unknown line)
+	SantaClaus$Reindeer.run(SantaClaus.java:117)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300182: (thread=200034)
+	sun.misc.Unsafe.compareAndSwapInt(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.compareAndSetWaitStatus(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.shouldParkAfterFailedAcquire(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.acquire(<Unknown Source>:Unknown line)
+	SantaClaus$Elf.run(SantaClaus.java:59)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300123: (thread=200001)
+	java.lang.Thread.start0(<Unknown Source>:Unknown line)
+	java.lang.Thread.start(<Unknown Source>:Unknown line)
+	SantaClaus.main(SantaClaus.java:49)
+TRACE 300187: (thread=200058)
+	sun.misc.Unsafe.unpark(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.LockSupport.unpark(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.unparkSuccessor(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doReleaseShared(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.setHeadAndPropagate(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.acquire(<Unknown Source>:Unknown line)
+	SantaClaus$Elf.run(SantaClaus.java:73)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300060: (thread=200001)
+	java.util.concurrent.Semaphore.<init>(<Unknown Source>:Unknown line)
+	SantaClaus.<clinit>(SantaClaus.java:7)
+TRACE 300030: (thread=200001)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getNextLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300015: (thread=200001)
+	sun.usagetracker.UsageTrackerClient.run(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+CPU SAMPLES BEGIN (total = 11) Sat Oct 06 11:06:31 2018
+rank   self  accum   count trace method
+   1  9.09%  9.09%       1 300188 sun.misc.Unsafe.compareAndSwapInt
+   2  9.09% 18.18%       1 300186 java.nio.Buffer.position
+   3  9.09% 27.27%       1 300185 sun.misc.Unsafe.compareAndSwapInt
+   4  9.09% 36.36%       1 300184 java.io.FileOutputStream.writeBytes
+   5  9.09% 45.45%       1 300183 sun.misc.Unsafe.putObject
+   6  9.09% 54.55%       1 300182 sun.misc.Unsafe.compareAndSwapInt
+   7  9.09% 63.64%       1 300123 java.lang.Thread.start0
+   8  9.09% 72.73%       1 300187 sun.misc.Unsafe.unpark
+   9  9.09% 81.82%       1 300060 java.util.concurrent.Semaphore.<init>
+  10  9.09% 90.91%       1 300030 sun.misc.URLClassPath$3.run
+  11  9.09% 100.00%       1 300015 sun.usagetracker.UsageTrackerClient.run
+CPU SAMPLES END

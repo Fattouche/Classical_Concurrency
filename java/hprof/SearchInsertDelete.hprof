@@ -1,0 +1,490 @@
+JAVA PROFILE 1.0.1, created Sat Oct 06 11:06:43 2018
+
+Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+  - Neither the name of Oracle nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=50000198, id = 200001, name="main", group="main")
+THREAD START (obj=500001d1, id = 200004, name="inserter 0", group="main")
+THREAD START (obj=500001d3, id = 200006, name="inserter 1", group="main")
+THREAD START (obj=500001d2, id = 200005, name="inserter 2", group="main")
+THREAD START (obj=500001d4, id = 200007, name="inserter 3", group="main")
+THREAD START (obj=500001d6, id = 200008, name="inserter 4", group="main")
+THREAD START (obj=500001d7, id = 200009, name="inserter 5", group="main")
+THREAD START (obj=500001d9, id = 200010, name="inserter 6", group="main")
+THREAD START (obj=500001db, id = 200012, name="inserter 8", group="main")
+THREAD START (obj=500001dc, id = 200013, name="inserter 9", group="main")
+THREAD START (obj=500001da, id = 200011, name="inserter 7", group="main")
+THREAD START (obj=500001dd, id = 200014, name="inserter 10", group="main")
+THREAD START (obj=500001de, id = 200015, name="inserter 11", group="main")
+THREAD START (obj=500001df, id = 200016, name="inserter 12", group="main")
+THREAD START (obj=500001e0, id = 200017, name="inserter 13", group="main")
+THREAD START (obj=500001e1, id = 200018, name="inserter 14", group="main")
+THREAD START (obj=500001e2, id = 200019, name="inserter 15", group="main")
+THREAD START (obj=500001e3, id = 200020, name="inserter 16", group="main")
+THREAD START (obj=500001e4, id = 200021, name="inserter 17", group="main")
+THREAD START (obj=500001e5, id = 200022, name="inserter 19", group="main")
+THREAD START (obj=500001e6, id = 200023, name="inserter 18", group="main")
+THREAD START (obj=500001e7, id = 200024, name="searcher 0", group="main")
+THREAD START (obj=500001e9, id = 200026, name="searcher 1", group="main")
+THREAD START (obj=500001e8, id = 200025, name="searcher 2", group="main")
+THREAD START (obj=500001ea, id = 200027, name="searcher 3", group="main")
+THREAD START (obj=500001ec, id = 200029, name="searcher 5", group="main")
+THREAD START (obj=500001eb, id = 200028, name="searcher 4", group="main")
+THREAD START (obj=500001ed, id = 200030, name="searcher 9", group="main")
+THREAD START (obj=500001ee, id = 200031, name="searcher 6", group="main")
+THREAD START (obj=500001f0, id = 200032, name="searcher 7", group="main")
+THREAD START (obj=500001ef, id = 200033, name="searcher 8", group="main")
+THREAD START (obj=500001f2, id = 200035, name="searcher 11", group="main")
+THREAD START (obj=500001f1, id = 200034, name="searcher 10", group="main")
+THREAD START (obj=500001f3, id = 200036, name="searcher 12", group="main")
+THREAD START (obj=500001f4, id = 200037, name="searcher 13", group="main")
+THREAD START (obj=500001f5, id = 200038, name="searcher 14", group="main")
+THREAD START (obj=500001f6, id = 200039, name="searcher 15", group="main")
+THREAD START (obj=500001f7, id = 200040, name="searcher 16", group="main")
+THREAD START (obj=500001f8, id = 200041, name="searcher 17", group="main")
+THREAD START (obj=500001f9, id = 200042, name="searcher 18", group="main")
+THREAD START (obj=500001fa, id = 200043, name="searcher 19", group="main")
+THREAD START (obj=500001fb, id = 200044, name="searcher 20", group="main")
+THREAD START (obj=500001fc, id = 200045, name="searcher 21", group="main")
+THREAD START (obj=500001fd, id = 200046, name="searcher 22", group="main")
+THREAD START (obj=500001fe, id = 200047, name="searcher 23", group="main")
+THREAD START (obj=500001ff, id = 200048, name="searcher 24", group="main")
+THREAD START (obj=50000201, id = 200050, name="searcher 26", group="main")
+THREAD START (obj=50000200, id = 200049, name="searcher 25", group="main")
+THREAD START (obj=50000202, id = 200051, name="searcher 27", group="main")
+THREAD START (obj=50000204, id = 200053, name="searcher 29", group="main")
+THREAD START (obj=50000203, id = 200052, name="searcher 28", group="main")
+THREAD START (obj=50000205, id = 200054, name="searcher 30", group="main")
+THREAD START (obj=50000206, id = 200055, name="searcher 31", group="main")
+THREAD START (obj=50000208, id = 200057, name="searcher 33", group="main")
+THREAD START (obj=50000207, id = 200056, name="searcher 32", group="main")
+THREAD START (obj=50000209, id = 200058, name="searcher 34", group="main")
+THREAD START (obj=5000020c, id = 200061, name="searcher 37", group="main")
+THREAD START (obj=5000020a, id = 200059, name="searcher 35", group="main")
+THREAD START (obj=5000020b, id = 200060, name="searcher 36", group="main")
+THREAD START (obj=5000020f, id = 200064, name="searcher 40", group="main")
+THREAD START (obj=5000020d, id = 200062, name="searcher 38", group="main")
+THREAD START (obj=5000020e, id = 200063, name="searcher 39", group="main")
+THREAD START (obj=50000211, id = 200066, name="searcher 42", group="main")
+THREAD START (obj=50000210, id = 200065, name="searcher 41", group="main")
+THREAD START (obj=50000212, id = 200067, name="searcher 43", group="main")
+THREAD START (obj=50000213, id = 200068, name="searcher 44", group="main")
+THREAD START (obj=50000214, id = 200069, name="searcher 45", group="main")
+THREAD START (obj=50000215, id = 200070, name="searcher 46", group="main")
+THREAD START (obj=50000216, id = 200071, name="searcher 47", group="main")
+THREAD START (obj=50000217, id = 200072, name="searcher 48", group="main")
+THREAD START (obj=50000218, id = 200073, name="searcher 49", group="main")
+THREAD START (obj=50000219, id = 200074, name="deleter 0", group="main")
+THREAD START (obj=5000021a, id = 200075, name="deleter 1", group="main")
+THREAD START (obj=5000021d, id = 200078, name="deleter 4", group="main")
+THREAD START (obj=5000021c, id = 200077, name="deleter 3", group="main")
+THREAD START (obj=5000021b, id = 200076, name="deleter 2", group="main")
+THREAD START (obj=5000021f, id = 200080, name="deleter 6", group="main")
+THREAD START (obj=5000021e, id = 200079, name="deleter 5", group="main")
+THREAD START (obj=50000220, id = 200081, name="deleter 7", group="main")
+THREAD END (id = 200001)
+THREAD START (obj=50000221, id = 200082, name="deleter 8", group="main")
+THREAD START (obj=50000222, id = 200083, name="deleter 9", group="main")
+THREAD START (obj=50000223, id = 200084, name="DestroyJavaVM", group="main")
+THREAD END (id = 200024)
+THREAD END (id = 200064)
+THREAD END (id = 200036)
+THREAD END (id = 200067)
+THREAD END (id = 200035)
+THREAD END (id = 200069)
+THREAD END (id = 200058)
+THREAD END (id = 200030)
+THREAD END (id = 200053)
+THREAD END (id = 200026)
+THREAD END (id = 200050)
+THREAD END (id = 200040)
+THREAD END (id = 200051)
+THREAD END (id = 200027)
+THREAD END (id = 200062)
+THREAD END (id = 200029)
+THREAD END (id = 200061)
+THREAD END (id = 200066)
+THREAD END (id = 200065)
+THREAD END (id = 200045)
+THREAD END (id = 200060)
+THREAD END (id = 200012)
+THREAD END (id = 200037)
+THREAD END (id = 200071)
+THREAD END (id = 200059)
+THREAD END (id = 200056)
+THREAD END (id = 200033)
+THREAD END (id = 200025)
+THREAD END (id = 200052)
+THREAD END (id = 200016)
+THREAD END (id = 200043)
+THREAD END (id = 200048)
+THREAD END (id = 200038)
+THREAD END (id = 200049)
+THREAD END (id = 200031)
+THREAD END (id = 200046)
+THREAD END (id = 200047)
+THREAD END (id = 200039)
+THREAD END (id = 200007)
+THREAD END (id = 200054)
+THREAD END (id = 200057)
+THREAD END (id = 200028)
+THREAD END (id = 200042)
+THREAD END (id = 200073)
+THREAD END (id = 200044)
+THREAD END (id = 200068)
+THREAD END (id = 200070)
+THREAD END (id = 200063)
+THREAD END (id = 200034)
+THREAD END (id = 200032)
+THREAD END (id = 200041)
+THREAD END (id = 200055)
+THREAD END (id = 200072)
+THREAD END (id = 200006)
+THREAD END (id = 200011)
+THREAD END (id = 200020)
+THREAD END (id = 200005)
+THREAD END (id = 200017)
+THREAD END (id = 200008)
+THREAD END (id = 200009)
+THREAD END (id = 200019)
+THREAD END (id = 200022)
+THREAD END (id = 200010)
+THREAD END (id = 200018)
+THREAD END (id = 200004)
+THREAD END (id = 200014)
+THREAD END (id = 200013)
+THREAD END (id = 200015)
+THREAD END (id = 200023)
+THREAD END (id = 200021)
+THREAD END (id = 200080)
+THREAD END (id = 200077)
+THREAD END (id = 200078)
+THREAD END (id = 200074)
+THREAD END (id = 200082)
+THREAD END (id = 200083)
+THREAD END (id = 200075)
+THREAD END (id = 200081)
+THREAD END (id = 200079)
+THREAD END (id = 200076)
+THREAD END (id = 200084)
+TRACE 300166: (thread=200010)
+	sun.misc.Unsafe.compareAndSwapInt(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.compareAndSetWaitStatus(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doReleaseShared(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.setHeadAndPropagate(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.doAcquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.acquire(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Inserter.run(SearchInsertDelete.java:103)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300164: (thread=200042)
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	java.io.PrintStream.print(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Searcher.run(SearchInsertDelete.java:122)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300163: (thread=200060)
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	java.io.PrintStream.print(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Searcher.run(SearchInsertDelete.java:122)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300162: (thread=200046)
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	java.io.PrintStream.print(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Searcher.run(SearchInsertDelete.java:122)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300161: (thread=200038)
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.newLine(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Searcher.run(SearchInsertDelete.java:122)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300103: (thread=200012)
+	java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly(<Unknown Source>:Unknown line)
+	java.util.concurrent.Semaphore.acquire(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Lightswitch.wait(SearchInsertDelete.java:25)
+	SearchInsertDelete$Inserter.run(SearchInsertDelete.java:102)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300102: (thread=200001)
+	java.security.AccessController.getStackAccessControlContext(<Unknown Source>:Unknown line)
+	java.security.AccessController.getContext(<Unknown Source>:Unknown line)
+	java.lang.Thread.init(<Unknown Source>:Unknown line)
+	java.lang.Thread.init(<Unknown Source>:Unknown line)
+	java.lang.Thread.<init>(<Unknown Source>:Unknown line)
+	SearchInsertDelete.main(SearchInsertDelete.java:82)
+TRACE 300165: (thread=200054)
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	java.io.PrintStream.print(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	SearchInsertDelete$Searcher.run(SearchInsertDelete.java:122)
+	java.lang.Thread.run(<Unknown Source>:Unknown line)
+TRACE 300072: (thread=200001)
+	java.io.FileInputStream.open0(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.open(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	SearchInsertDelete.main(SearchInsertDelete.java:68)
+TRACE 300070: (thread=200001)
+	java.io.FileInputStream.open0(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.open(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	SearchInsertDelete.main(SearchInsertDelete.java:67)
+TRACE 300068: (thread=200001)
+	java.io.FileInputStream.open0(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.open(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	SearchInsertDelete.main(SearchInsertDelete.java:66)
+TRACE 300065: (thread=200001)
+	java.io.FileInputStream.open0(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.open(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	SearchInsertDelete.<clinit>(SearchInsertDelete.java:11)
+TRACE 300041: (thread=200001)
+	java.io.FileInputStream.open0(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.open(<Unknown Source>:Unknown line)
+	java.io.FileInputStream.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$FileLoader$1.getInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.cachedInputStream(<Unknown Source>:Unknown line)
+	sun.misc.Resource.getByteBuffer(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300038: (thread=200001)
+	java.io.WinNTFileSystem.getBooleanAttributes(<Unknown Source>:Unknown line)
+	java.io.File.exists(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<init>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getNextLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300026: (thread=200001)
+	java.io.FileOutputStream.close0(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.access$000(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream$1.close(<Unknown Source>:Unknown line)
+	java.io.FileDescriptor.closeAll(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.close(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.registerUsage(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.setupAndTimestamp(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.access$000(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient$4.run(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient$4.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.run(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+CPU SAMPLES BEGIN (total = 15) Sat Oct 06 11:06:47 2018
+rank   self  accum   count trace method
+   1  6.67%  6.67%       1 300166 sun.misc.Unsafe.compareAndSwapInt
+   2  6.67% 13.33%       1 300164 java.io.FileOutputStream.writeBytes
+   3  6.67% 20.00%       1 300163 java.io.FileOutputStream.writeBytes
+   4  6.67% 26.67%       1 300162 java.io.FileOutputStream.writeBytes
+   5  6.67% 33.33%       1 300161 java.io.FileOutputStream.writeBytes
+   6  6.67% 40.00%       1 300103 java.util.concurrent.locks.AbstractQueuedSynchronizer.acquireSharedInterruptibly
+   7  6.67% 46.67%       1 300102 java.security.AccessController.getStackAccessControlContext
+   8  6.67% 53.33%       1 300165 java.io.FileOutputStream.writeBytes
+   9  6.67% 60.00%       1 300072 java.io.FileInputStream.open0
+  10  6.67% 66.67%       1 300070 java.io.FileInputStream.open0
+  11  6.67% 73.33%       1 300068 java.io.FileInputStream.open0
+  12  6.67% 80.00%       1 300065 java.io.FileInputStream.open0
+  13  6.67% 86.67%       1 300041 java.io.FileInputStream.open0
+  14  6.67% 93.33%       1 300038 java.io.WinNTFileSystem.getBooleanAttributes
+  15  6.67% 100.00%       1 300026 java.io.FileOutputStream.close0
+CPU SAMPLES END

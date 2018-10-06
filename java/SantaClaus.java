@@ -29,7 +29,6 @@ public class SantaClaus {
         // init santa
         Thread santaThread = new Thread(santa);
         santaThread.setName("santa");
-        santaThread.setDaemon(true);
         santaThread.start();
 
         // init reindeer
@@ -37,6 +36,7 @@ public class SantaClaus {
         for (int i = 0; i < reindeers.length; i++) {
             reindeers[i] = new Thread(reindeer);
             reindeers[i].setName("reindeer " + i);
+            reindeers[i].setDaemon(true);
             reindeers[i].start();
         }
 
@@ -45,6 +45,7 @@ public class SantaClaus {
         for (int i = 0; i < elves.length; i++) {
             elves[i] = new Thread(elf);
             elves[i].setName("elf " + i);
+            elves[i].setDaemon(true);
             elves[i].start();
         }
     }
@@ -94,7 +95,7 @@ public class SantaClaus {
                         System.out.println("Reindeers finished, hitching sled!");
                         reindeerSem.release(9);
                         reindeer -= 9;
-                        System.exit(0);
+                        return;
                     } else if (elves == 3) {
                         System.out.println("Helping three elves");
                         sleepThread(250);
