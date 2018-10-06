@@ -9,7 +9,7 @@ import (
 	"github.com/pkg/profile"
 )
 
-var chairs = 5
+var numChairs = 5
 var customers = 100
 var wg sync.WaitGroup
 
@@ -20,7 +20,7 @@ func sleepThread() {
 func main() {
 	defer profile.Start().Stop()
 	//Buffered to number of chairs
-	chairs := make(chan int, chairs)
+	chairs := make(chan int, numChairs)
 	//Blocks on both ends untill barber and customer are both ready
 	barberAvailable := make(chan int)
 	//Start the barber
