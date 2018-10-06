@@ -6,6 +6,8 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/pkg/profile"
 )
 
 var mutexDelete sync.RWMutex
@@ -21,6 +23,7 @@ func sleepThread(counter int) {
 	time.Sleep(time.Duration(rand.Intn(counter)) * time.Millisecond)
 }
 func main() {
+	defer profile.Start().Stop()
 	fmt.Println("Starting inserters")
 	myList.PushBack(1)
 	myList.PushBack(2)

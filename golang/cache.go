@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/pkg/profile"
 )
 
 func sleepThread(counter int) {
@@ -22,6 +24,7 @@ type cache struct {
 }
 
 func main() {
+	defer profile.Start().Stop()
 	myCache := createCache()
 	wg := sync.WaitGroup{}
 	wg.Add(3)

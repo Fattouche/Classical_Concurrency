@@ -3,9 +3,10 @@ package main
 import (
 	"fmt"
 	"math/rand"
-	"os"
 	"sync"
 	"time"
+
+	"github.com/pkg/profile"
 )
 
 var reindeer = 9
@@ -17,6 +18,7 @@ func sleepThread(counter int) {
 }
 
 func main() {
+	defer profile.Start().Stop()
 	//Buffered to number of reindeers remaining
 	reindeersRemaining := make(chan int, reindeer)
 	initReindeer(reindeersRemaining)
@@ -31,7 +33,7 @@ func main() {
 	//Start santa helping elves
 	go helpElves(santaAvailable, threeElves)
 
-	wg.Add(elves)
+	wg.Add(1)
 	//Start the elves at random times
 	for i := 0; i < elves; i++ {
 		go getHelp(santaAvailable, elvesWaiting, threeElves, i)
@@ -65,7 +67,8 @@ func waitForReindeer(reindeersFinished chan int) {
 	//Unbufferred channel, blocks till reindeers finished
 	<-reindeersFinished
 	fmt.Println("Reindeers finished, hitching sled!")
-	os.Exit(0)
+	wg.Done()
+	return
 }
 
 func helpElves(santaAvailable, threeElves chan int) {
@@ -97,5 +100,4 @@ func getHelp(santaAvailable, elvesWaiting, threeElves chan int, id int) {
 	//Get santas help
 	sleepThread(250)
 	//No longer waiting
-	wg.Done()
 }

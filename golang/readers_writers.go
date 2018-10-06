@@ -5,6 +5,8 @@ import (
 	"math/rand"
 	"sync"
 	"time"
+
+	"github.com/pkg/profile"
 )
 
 var myGlobal int
@@ -16,6 +18,7 @@ func sleepThread() {
 }
 
 func main() {
+	defer profile.Start().Stop()
 	totalReaders := 10
 	totalWriters := 5
 	wg.Add(totalReaders)

@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"sync"
+
+	"github.com/pkg/profile"
 )
 
 var servingSize = 10
@@ -10,6 +12,7 @@ var savages = 100
 var wg sync.WaitGroup
 
 func main() {
+	defer profile.Start().Stop()
 	potEmpty := make(chan int, 1)
 	pot := make(chan int, servingSize)
 	potFull := make(chan int, 1)
